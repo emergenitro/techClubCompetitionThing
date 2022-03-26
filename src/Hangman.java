@@ -10,11 +10,11 @@ public class Hangman {
         int numOfGuesses = 0;
 
         // Setting the array "guessed_word" to all underscores
-        for (int i=0; i < word.length(); ++i){
+        for (int i=0; i < word_array.length; ++i){
             word_array[i] = '_';
         }
         for (int j=0; j < word_array.length; ++ j){
-            System.out.print(word_array[j]);
+            System.out.print(word_array[j] + " ");
         }
 
         Scanner sc = new Scanner(System.in);
