@@ -41,7 +41,7 @@ public class Hangman {
             System.out.println();
             System.out.println();
             sendText();
-            System.out.print("Enter your guess: ");
+            System.out.print("\nEnter your guess: ");
         
             String str = Sc.next(); 
 
