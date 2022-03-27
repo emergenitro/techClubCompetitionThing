@@ -10,7 +10,7 @@ public class Hangman {
     private static int numOfGuesses; // Number of guesses - Self Explanatory
     private static String guessedWord = new String(); // Create new string for the guessed word using word_array later
     private static boolean accepted = true; // Used to check if input is accepted 
-    static Scanner Sc = new Scanner(System.in); // Input scanner :)
+    static Scanner Sc = new Scanner(System.in); // Input scanner
 
     public static void restart() {
         // Re-initializing all variables to the original, required values
@@ -116,7 +116,7 @@ public class Hangman {
             if (word.charAt(i) == c) word_array[i] = c;
         }
     }
-
+    // Updates but doesnt send the image or thingie of the hangman
     public static void updateImage(int count){
         if (count == 1) img[1] = "|        0";
         if (count == 2) img[1] = "|      \\ 0";
