@@ -44,8 +44,14 @@ public class Hangman {
             System.out.print("Enter your guess: ");
         
             String str = Sc.next(); 
+
+            // Deny if the guess has more than one character
+            if (str.length() != 1){
+                System.out.print("\n\nKindly re-enter your guess. Please keep it a single character\n\n");
+                accepted = false;
+            } 
             
-            // Check if any of the characters of the input are special or is more than one character
+            // Check if any of the characters of the input are special
             for (int j=0;j < str.length(); ++j) {
                 char[] chars = str.toCharArray();
                 if (!Character.isLetter(chars[j])){
@@ -54,42 +60,39 @@ public class Hangman {
                     break;
                 } 
             }
-            if (str.length() != 1){
-                System.out.print("\n\nKindly re-enter your guess. Please keep it a single character\n\n");
-                accepted = false;
-            } 
 
-            // Checking if input is not a special char
+            // Check if user has inputted letter
+            if (guessed_letters.contains(str.charAt(0))){
+                System.out.println("\n\nYou have already entered this letter! Kindly re-enter\n\n"); // Deny inputs which have already been used
+                accepted = false;
+            }
+
+            // Using "accepted" from the above checks
             if (accepted){
-                if (!guessed_letters.contains(str.charAt(0))){
-                    if (!checkIfWordContainsGuess(str.charAt(0))) {
-                        numOfGuesses++;
-                        updateImage(numOfGuesses);
-                    } 
-                    else if (checkIfWordContainsGuess(str.charAt(0))) {
-                        updateGuessedWord(str.charAt(0));
-                        guessedWord = new String(word_array);
-                    }
-                    guessed_letters.add(str.charAt(0));
+                if (!checkIfWordContainsGuess(str.charAt(0))) {
+                    numOfGuesses++;
+                    updateImage(numOfGuesses);
+                } 
+                else if (checkIfWordContainsGuess(str.charAt(0))) {
+                    updateGuessedWord(str.charAt(0));
+                    guessedWord = new String(word_array);
                 }
-                else{
-                    System.out.println("\n\nYou have already entered this letter! Kindly re-enter\n\n");
-                }
+                guessed_letters.add(str.charAt(0));                
             }
             accepted = true;
         }
-        sendText();
+        sendText(); // Sends final hangman and word
 
-        // Winning-Losing messages
+        // Winning-Losing messages (uses shorthand if-else statement)
         String winloseMessage = (numOfGuesses>=6) ? "\n\nYou have lost! The answer was %s\n " : "\n\nYou have won! Woohoo! The answer is %s\n";
         System.out.print(String.format(winloseMessage, word));
 
-
+        // Restarting the game
         System.out.print("\nPlay again (Y/N): ");
         String a = Sc.next();
-        
         if (a.equals("Y")) restart();
     }
+
     public static void main(String[] args) throws Exception {
         // Initializing the array "guessed_word" to all underscores
         for (int i=0; i < word_array.length; ++i){
@@ -126,7 +129,7 @@ public class Hangman {
     public static void sendText(){
         String thing = String.join("\n", img); // This and line below are for printing the image of the hangman
         System.out.println(thing);
-
+        System.out.println(String.format("\nRemaining lives: %d", (6 - numOfGuesses))); // Prints remaining lives
         for (int i=0; i < word_array.length; ++i){
             System.out.print(word_array[i] + " "); // The blanks/underscores for seen under the hangman
         }
