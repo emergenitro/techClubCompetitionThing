@@ -2,18 +2,18 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Hangman {
-    private static String arr[] = new String[]{"word", "hello", "test", "random"};
-    private static String img[] = new String[]{"----------", "|", "|", "|", "|", "|\n|\n----------"};
-    private static String word = arr[(int)(Math.random() * arr.length)];;
-    private static char word_array[] = new char[word.length()];
-    private static ArrayList<Character> guessed_letters = new ArrayList<Character>();
-    private static int numOfGuesses;
-    private static String guessedWord = new String();
-    private static boolean accepted = true;
-    static Scanner Sc = new Scanner(System.in);
+    private static String arr[] = new String[]{"word", "hello", "test", "random", "never", "gonna", "give", "you", "up"}; // List of words
+    private static String img[] = new String[]{"----------", "|", "|", "|", "|", "|\n|\n----------"}; // Image lines for the hangman
+    private static String word = arr[(int)(Math.random() * arr.length)];; // The random word
+    private static char word_array[] = new char[word.length()]; // Characters of the word (will be intialized with _ _ _ _...)
+    private static ArrayList<Character> guessed_letters = new ArrayList<Character>(); // List of letters that are already guessed, for bonus challenge
+    private static int numOfGuesses; // Number of guesses - Self Explanatory
+    private static String guessedWord = new String(); // Create new string for the guessed word using word_array later
+    private static boolean accepted = true; // Used to check if input is accepted 
+    static Scanner Sc = new Scanner(System.in); // Input scanner :)
 
     public static void restart() {
-        // Re-initializing all variables to original, required values
+        // Re-initializing all variables to the original, required values
         numOfGuesses = 0;
         word = arr[(int)(Math.random() * arr.length)];
         word_array = new char[word.length()];
@@ -29,16 +29,23 @@ public class Hangman {
     }
 
     public static void start() {
+        // Update final word
         guessedWord = new String(word_array);
         
+        // While loop used to costantly take inputs 
         while (numOfGuesses < 6 && guessedWord.contains("_")){
             // Creating some space before printing
+            // Option 1: System.out.print("\n\n\n\n")
+            // ----------------------------------------
+            // Option 2:
             System.out.println();
             System.out.println();
             sendText();
             System.out.print("Enter your guess: ");
         
             String str = Sc.next(); 
+            
+            // Check if any of the characters of the input are special or is more than one character
             for (int j=0;j < str.length(); ++j) {
                 char[] chars = str.toCharArray();
                 if (!Character.isLetter(chars[j])){
@@ -47,6 +54,12 @@ public class Hangman {
                     break;
                 } 
             }
+            if (str.length() != 1){
+                System.out.print("\n\nKindly re-enter your guess. Please keep it a single character\n\n");
+                accepted = false;
+            } 
+
+            // Checking if input is not a special char
             if (accepted){
                 if (!guessed_letters.contains(str.charAt(0))){
                     if (!checkIfWordContainsGuess(str.charAt(0))) {
@@ -68,6 +81,8 @@ public class Hangman {
         sendText();
 
         // Winning-Losing messages
+        String winloseMessage = (numOfGuesses>=6) ? "\n\nYou have lost! The answer was %s\n " : "\n\nYou have won! Woohoo! The answer is %s\n";
+        System.out.print(String.format(winloseMessage, word));
 
 
         System.out.print("\nPlay again (Y/N): ");
@@ -83,15 +98,16 @@ public class Hangman {
         start();
     }
 
-
+    // Checks if the word contains the guessed character
     public static boolean checkIfWordContainsGuess(char c){
+        // Loops through the required word, and checks if any of them is the character argument. If false is returned, number of tries is incremented
         for (int i=0; i<word.length();++i){
             if (word.charAt(i) == c) return true;
         }
         return false;
     }
 
-
+    // Update the word in case that the character is seen in the word
     public static void updateGuessedWord(char c){
         for (int i=0; i < word.length();++i){
             if (word.charAt(i) == c) word_array[i] = c;
