@@ -1,7 +1,9 @@
+// The below code is for the bonus version of the hangman problem 
+
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class Hangman {
+public class karthiksankar_hangman {
     private static String arr[] = new String[]{"word", "hello", "test", "random", "never", "gonna", "give", "you", "up"}; // List of words
     private static String img[] = new String[]{"----------", "|", "|", "|", "|", "|\n|\n----------"}; // Image lines for the hangman
     private static String word = arr[(int)(Math.random() * arr.length)];; // The random word
